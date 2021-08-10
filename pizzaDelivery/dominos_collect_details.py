@@ -35,6 +35,20 @@ class collect_details:
 
         return delivary_loc
 
+    def customer_details(self,fake):
+        customerName = fake.name()
+        customerAddress = fake.address()
+        customerPhoneNumber = fake.phone_number()
+        customerEmail = fake.email()
+
+        customer_det = {'customername': customerName,
+                        'customeraddress': customerAddress,
+                        'customerphonenumber': customerPhoneNumber,
+                        'customeremail': customerEmail
+                        }
+
+        return customer_det
+
     def pizza_menu(self):
         validPizzaNames = ['Margherita',
                            'Marinara',

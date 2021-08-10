@@ -1,11 +1,12 @@
-import dominos_collect_details
 import random
-from faker import Faker
 from datetime import datetime
+from pizzaDelivery.dominos_collect_details import collect_details
 
 
-class dominos_generate_orders(dominos_collect_details.collect_details):
+class generate_details(collect_details):
 
+    def __init__(self):
+        super().__init__()
 
     def generate_orders(self):
         # Each Order can have 1-10 pizzas in it
@@ -36,13 +37,22 @@ class dominos_generate_orders(dominos_collect_details.collect_details):
         }
         return order_and_price
 
-    def generate_message(self,stores,delivery,orders,orderId):
+    def generate_message(self,orderId,fake):
+
+        stores = self.stores_locations(fake)
+        delivery = self.delivery_locations(fake)
+        orders = self.generate_orders()
+        customer = self.customer_details(fake)
 
         message = {
             "storeaddress": stores['storeAddress'],
             "storelatitude": stores['storeLatitude'],
             'storelongitude': stores['storeLongitude'],
             'storephonenumber': stores['storePhoneNumber'],
+            'customername': customer['customername'],
+            'customeraddress': customer['customeraddress'],
+            'customerphonenumber': customer['customerphonenumber'],
+            'customeremail': customer['customeremail'],
             'delivaryaddress': delivery['delivaryAddress'],
             'delivarylatitude': delivery['delivaryLatitude'],
             'delivarylongitude': delivery['delivaryLongitude'],
@@ -51,24 +61,14 @@ class dominos_generate_orders(dominos_collect_details.collect_details):
             'orders': orders['totalorders'],
             'totalamountpizza': orders['totalamountpizza'],
             'totalamountincltax': orders['totalamountincltax'],
-            'date':datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+            'date':datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),
 
 
         }
 
         return message
 
-if __name__ == "__main__":
 
-    fake = Faker()
-    dgo = dominos_generate_orders()
-
-    for i in range(1,10):
-        stores = dgo.stores_locations(fake)
-        delivery = dgo.delivery_locations(fake)
-        orders = dgo.generate_orders()
-        message = dgo.generate_message(stores,delivery,orders,str(random.randint(50,1000)))
-        print(message)
 
 
 
